@@ -31,6 +31,8 @@
 #     remote_src: yes
 
 - name: calling and running common app-pre-req
+  tags:
+  - deployment
   ansible.builtin.import_role:
     name: common
     tasks_from: app-pre-req
@@ -39,6 +41,8 @@
 #   ansible.builtin.command: cd /app
 
 - name: installing npm dependencies
+  tags:
+  - deployment
   ansible.builtin.command: npm install
   args:
     chdir: /app
@@ -47,7 +51,9 @@
   ansible.builtin.template:
     src: backend.service.j2
     dest: /etc/systemd/system/backend.service
-  
+  notify:
+  - start and enable backend service
+
 - name: installing mysql
   ansible.builtin.dnf:
     name: mysql
@@ -69,9 +75,14 @@
     name: all
     target: /app/schema/backend.sql
 
-- name: dameon start and enable
+- name: daemon reload
   ansible.builtin.systemd_service:
-    name: backend
-    state: started
     daemon_reload: true
-    enabled: true
+
+# - name: start and enable backend service
+#   tags:
+#   - deployment
+#   ansible.builtin.service:
+#     name: backend
+#     state: restarted
+#     enabled: true
