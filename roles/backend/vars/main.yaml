@@ -1,6 +1,5 @@
 login_host: db.avinexpense.online
 login_user: root
-mysql_root_passwd: ExpenseApp@1
 DB_HOST: db.avinexpense.online
 app_location: /app
 component: backend
