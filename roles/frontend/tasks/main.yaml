@@ -9,21 +9,26 @@
     state: started
     enabled: true
 
-- name: remove files
-  ansible.builtin.file:
-    path: /usr/share/nginx/html
-    state: absent
+# - name: remove files
+#   ansible.builtin.file:
+#     path: /usr/share/nginx/html
+#     state: absent
 
-- name: creating html directory
-  ansible.builtin.file:
-    path: /usr/share/nginx/html
-    state: directory
+# - name: creating html directory
+#   ansible.builtin.file:
+#     path: /usr/share/nginx/html
+#     state: directory
 
-- name: frontend download
-  ansible.builtin.unarchive:
-    src: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
-    dest: /usr/share/nginx/html
-    remote_src: yes
+# - name: frontend download
+#   ansible.builtin.unarchive:
+#     src: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+#     dest: /usr/share/nginx/html
+#     remote_src: yes
+
+- name: calling and running app-pre-req
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-pre-req
 
 - name: copying expense conf file
   ansible.builtin.template:
